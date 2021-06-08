@@ -93,7 +93,7 @@ Luego ejecutamos el payload mandando los batchars, y comparamos usando
 ```
 !mona compare -f C:\Users\Diego\Desktop\carpeta\bytearray.bin -a 0187A128
 ```
-donde especificamos la ruta del archivo `.bin` y con el parametro `-a` especificamos la direccion del `EIP`. Lo siguiente es quitar el resultado de badchar detectado de nuestro payload y crear otro `bytearray.bin` con el siguiente comando
+donde especificamos la ruta del archivo `.bin` y con el parametro `-a` especificamos la direccion del `ESP`. Lo siguiente es quitar el resultado de badchar detectado de nuestro payload y crear otro `bytearray.bin` con el siguiente comando
 ```
 !mona bytearray -cpb "\x00"
 ```
